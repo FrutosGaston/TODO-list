@@ -8,12 +8,12 @@ class TasksController < ApplicationController
   end
 
   def create
-    Task.create!(allowed_params.merge(user: @current_user))
-
-    redirect_to root_path, notice: 'Task has been created'
-  rescue ActiveRecord::RecordInvalid
-    task
-    render :new
+    @task = Task.new(allowed_params.merge(user: @current_user))
+    if @task.save
+      redirect_to root_path, notice: 'Task has been created'
+    else
+      render :new
+    end
   end
 
   def edit
